@@ -1,0 +1,8 @@
+{
+    "name": "Gemstone",
+    "author": "DocilElm",
+    "description": "Displays Gemstone Mining Stats",
+    "entry": "index.js",
+    "version": "0.0.1",
+    "requires": ["PogData", "Vigilance", "requestV2"]
+}
