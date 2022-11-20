@@ -9,6 +9,16 @@ let drill_fuel = 0
 let purse_powder = null
 let old_compact = 0
 let profit_session = 0
+let gem_prices = {
+  "Ruby": 0,
+  "Opal": 0,
+  "Amber": 0,
+  "Topaz": 0,
+  "Sapphire": 0,
+  "Amethyst": 0,
+  "Jasper": 0,
+  "Jade": 0,
+}
 
 register('actionbar', (gained) => {
   if(!config.config_display) return;
@@ -33,10 +43,7 @@ register('actionbar', (gained) => {
 
 register("chat", (gemstone_type, amount) => {
   let am = parseInt(amount)
-  let gem_type = `FLAWED_${gemstone_type.toUpperCase()}_GEM`
-  request({url : `https://api.slothpixel.me/api/skyblock/bazaar/${gem_type}`,headers: { 'User-Agent': ' Mozilla/5.0' }, json: true}).then(response => {
-    profit_session += parseInt(response.quick_status.sellPrice) * am
-  }).catch(error =>{ print(error);});
+  profit_session += gem_prices[`${gemstone_type}`] * am
 }).setCriteria("PRISTINE! You found ${*} Flawed ${gemstone_type} Gemstone x${amount}!");
 
 register("renderOverlay", () => {
@@ -54,3 +61,16 @@ register("renderOverlay", () => {
   Renderer.drawStringWithShadow(`${PREFIX}\n${sessionxp_txt}\n${session_petxp_txt}\n${compe_txt}\n${drillf_txt}\n${powderp_txt}\n${profit_txt}`, data.x, data.y)
 });
 register("command", () => profit_session = 0).setName("profit_rs");
+
+register("worldLoad", () => {
+  request({url : `https://api.slothpixel.me/api/skyblock/bazaar/`,headers: { 'User-Agent': ' Mozilla/5.0' }, json: true}).then(response => {
+    gem_prices.Ruby = parseInt(response.FLAWED_RUBY_GEM.quick_status.sellPrice)
+    gem_prices.Amber = parseInt(response.FLAWED_AMBER_GEM.quick_status.sellPrice)
+    gem_prices.Amethyst = parseInt(response.FLAWED_AMETHYST_GEM.quick_status.sellPrice)
+    gem_prices.Jade = parseInt(response.FLAWED_JADE_GEM.quick_status.sellPrice)
+    gem_prices.Opal = parseInt(response.FLAWED_OPAL_GEM.quick_status.sellPrice)
+    gem_prices.Jasper = parseInt(response.FLAWED_JASPER_GEM.quick_status.sellPrice)
+    gem_prices.Sapphire = parseInt(response.FLAWED_SAPPHIRE_GEM.quick_status.sellPrice)
+    gem_prices.Topaz = parseInt(response.FLAWED_TOPAZ_GEM.quick_status.sellPrice)
+  }).catch(error =>{ print(error);});
+})
