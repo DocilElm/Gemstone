@@ -3,6 +3,7 @@
 import Settings from "./config";
 import { data, PREFIX } from "./utils/util";
 import "./features/display";
+import "./features/chat";
 register("command", () => Settings.openGUI()).setName("gemstone", true);
 register("step", () => {
     if (data.first_time) {
