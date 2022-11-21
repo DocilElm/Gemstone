@@ -18,7 +18,7 @@ class Settings {
     }
     @SwitchProperty({
         name: "Display",
-        description: "Display Gemstone Stats\n§4Requires Pickaxe/Drill With Compact Enchant!",
+        description: "Display Gemstone Stats\n§4Requires Drill!",
         category: "General",
         subcategory: "General"
     })

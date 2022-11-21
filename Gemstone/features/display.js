@@ -7,7 +7,7 @@ let session_pet_xp = 0
 let compact_ench = 0
 let drill_fuel = 0
 let purse_powder = null
-let old_compact = 0
+let old_fuel = 0
 let profit_session = 0
 let gem_prices = {
   "Ruby": 0,
@@ -25,19 +25,20 @@ register('actionbar', (gained) => {
   if(Player.getHeldItem() == null) return;
   let h_obj = Player.getHeldItem().getNBT().toObject()["tag"]["ExtraAttributes"];
   let scoreb = Scoreboard.getLines().map(line => line.getName().removeFormatting()); 
-  let new_comp = parseInt(h_obj["compact_blocks"]);
+  let new_fuel = parseInt(h_obj["drill_fuel"]);
   scoreb.forEach(line => {
         if (line.includes("Gemstone")) {
             purse_powder = line.split(":")[1].replace(" ","");
         }
   })
-  if(old_compact == 0) old_compact = new_comp;
-  else if(old_compact !== new_comp){
+  if(!new_fuel) return
+  else if(old_fuel == 0) old_fuel = new_fuel;
+  else if(old_fuel !== new_fuel){
     session_xp += parseInt(gained);
     session_pet_xp += parseInt(gained*1.5);
     compact_ench = parseInt(h_obj["compact_blocks"]);
     drill_fuel = parseInt(h_obj["drill_fuel"]);
-    old_compact = new_comp;
+    old_fuel = new_fuel;
   }
 }).setCriteria('${*}+${gained} Mining ${*}');
 
